@@ -30,7 +30,7 @@ def menu():
                 
                 if choice == "1" or choice == "2":
                     url = input("Insira a URL da playlist:")
-                    downloader.download_playlist(url, audioOnly=choice == "2")
+                    downloader.downloadPlaylist(url, audioOnly=choice == "2")
                 elif choice == "3":
                     Util.clearTerminal()
                     break
