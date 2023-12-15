@@ -1,9 +1,5 @@
+from util import Util
 from youtube_downloader import YoutubeDownloader
-from os import system, name 
-
-def clearTerminal():
-    if name == 'nt': system('cls')
-    else: system('clear')
 
 def menu():
     while True:
@@ -25,7 +21,7 @@ def menu():
 
         elif choice == "3":
             while(True):
-                clearTerminal()
+                Util.clearTerminal()
                 print("Escolha uma opção:")
                 print("1. Download mp4 (video)")
                 print("2. Download mp3 (audio only)")
@@ -36,7 +32,7 @@ def menu():
                     url = input("Insira a URL da playlist:")
                     downloader.download_playlist(url, audioOnly=choice == "2")
                 elif choice == "3":
-                    clearTerminal()
+                    Util.clearTerminal()
                     break
                 else:
                     print("Opção inválida.")
@@ -45,7 +41,7 @@ def menu():
             break
 
         else:
-            clearTerminal()
+            Util.clearTerminal()
             print("Opção inválida.")
 
 if __name__ == "__main__":

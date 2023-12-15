@@ -2,16 +2,13 @@ from pytube import YouTube, Playlist
 import sys
 import os
 
+from util import Util
 
 class YoutubeDownloader:
     def __init__(self):
         self.download_dir = os.path.join("downloaded")
     
-    def percent(self, tem, total):
-        perc = (float(tem) / float(total)) * float(100)
-        return perc
-    
-    def progress_function(self, chunk, file_handle, bytes_remaining):
+    def _progress_function(self, chunk, file_handle, bytes_remaining):
         global filesize
         current = ((filesize - bytes_remaining)/filesize)
         percent = ('{0:.1f}').format(current*100)
@@ -20,56 +17,56 @@ class YoutubeDownloader:
         sys.stdout.write(' ↳ |{bar}| {percent}%\r'.format(bar=status, percent=percent))
         sys.stdout.flush()
     
-    def fix_filename(self, filename: str):
+    def _fix_filename(self, filename: str):
         for char in r"\/:*?<>|":
             filename = filename.replace(char, "_")
         return filename
     
-    def check_download_dir(self):
+    def _check_download_dir(self):
         if not os.path.exists(self.download_dir):
             os.makedirs(self.download_dir)
     
     def downloadVideo(self, video_url: str, isPlaylist: bool=False):
         global filesize
-        self.check_download_dir()
+        self._check_download_dir()
         
-        video = YouTube(video_url, on_progress_callback=self.progress_function)
+        video = YouTube(video_url, on_progress_callback=self._progress_function)
         #  if isPlaylist else YouTube(video_url)
         
         stream = video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
         filesize = stream.filesize
-        filename = f"{self.fix_filename(video.title)}.mp4"
+        filename = f"{self._fix_filename(video.title)}.mp4"
 
         try:
             print(f'Baixando arquivo {filename}...')
             stream.download(filename=filename, output_path=self.download_dir)
-            if not isPlaylist: os.system('cls')
+            if not isPlaylist: Util.clearTerminal()
             print('Arquivo salvo na pasta downloaded')
         except OSError as e:
-            if not isPlaylist: os.system('cls')
-            print(f"Error downloading video: {video.title} - {e}")
+            if not isPlaylist: Util.clearTerminal()
+            print(f"Erro ao baixar o video: {video.title} - {e}")
             return False
 
         return True
 
     def downloadAudio(self, video_url: str, isPlaylist: bool=False):
         global filesize
-        self.check_download_dir()
-        video = YouTube(video_url, on_progress_callback=self.progress_function)
+        self._check_download_dir()
+        video = YouTube(video_url, on_progress_callback=self._progress_function)
         #  if isPlaylist else YouTube(video_url)
         
         stream = video.streams.filter(only_audio=True).order_by('abr').desc().first()
         filesize = stream.filesize
-        filename = f"{self.fix_filename(video.title)}.mp3"
+        filename = f"{self._fix_filename(video.title)}.mp3"
 
         try:
             print(f'Baixando arquivo {filename}...')
             stream.download(filename=filename, output_path=self.download_dir)
-            if not isPlaylist: os.system('cls')
+            if not isPlaylist: Util.clearTerminal()
             print('Arquivo salvo na pasta downloaded')
         except OSError as e:
-            if not isPlaylist: os.system('cls')
-            print(f"Error downloading audio: {video.title} - {e}")
+            if not isPlaylist: Util.clearTerminal()
+            print(f"Erro ao baixar o video: {video.title} - {e}")
             return False
 
         return True
@@ -82,11 +79,11 @@ class YoutubeDownloader:
         playlist = Playlist(playlist_url)
         
         if not playlist.title:
-            print(f"Playlist unavailable")
+            print(f"Playlist indisponível")
             return False
 
         for video in playlist.videos:
-            self.check_download_dir()
+            self._check_download_dir()
         
             if audioOnly:
                 success = self.downloadAudio(video.embed_url, isPlaylist=True)
@@ -98,5 +95,5 @@ class YoutubeDownloader:
             else:
                 failed_downloads += 1
                 
-        os.system('cls')
-        print(f"Downloaded {successful_downloads} videos and {failed_downloads} failed.")
+        Util.clearTerminal()
+        print(f"{successful_downloads} videos baixados com sucesso e {failed_downloads} falhas.")
