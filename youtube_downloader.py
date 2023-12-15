@@ -31,9 +31,8 @@ class YoutubeDownloader:
         self._check_download_dir()
         
         video = YouTube(video_url, on_progress_callback=self._progress_function)
-        #  if isPlaylist else YouTube(video_url)
         
-        stream = video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
+        stream = video.streams.filter(progressive=True, file_extension='mp4').get_highest_resolution()
         filesize = stream.filesize
         filename = f"{self._fix_filename(video.title)}.mp4"
 
@@ -53,9 +52,8 @@ class YoutubeDownloader:
         global filesize
         self._check_download_dir()
         video = YouTube(video_url, on_progress_callback=self._progress_function)
-        #  if isPlaylist else YouTube(video_url)
         
-        stream = video.streams.filter(only_audio=True).order_by('abr').desc().first()
+        stream = video.streams.get_audio_only()
         filesize = stream.filesize
         filename = f"{self._fix_filename(video.title)}.mp3"
 
