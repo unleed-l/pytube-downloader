@@ -1,6 +1,6 @@
 # Pytube Downloader
 
-A simples python script to download videos and playlists from Youtube using pytube library.
+A simple python script to download videos and playlists from Youtube using pytube library.
 
 ## Functionalities
 
