@@ -1,25 +1,21 @@
-# Pytube Downloader
+# Pytube Downloader 🎥📥
 
 A simple python script to download videos and playlists from Youtube using pytube library.
 
-## Functionalities
+## Functionalities 🚀
 
-- Download Video
-- Download Audio
-- Download Playlist (video or audio only)
+- Download Video 🎬
+- Download Audio 🎵
+- Download Playlist (video or audio only) 📂
 
-## Setup
+## Setup ⚙️
 
-- Install [Python](https://www.python.org/downloads).
+- Install [Python](https://www.python.org/downloads) 🐍.
 
 - Install script requirements:
 
-```
+```bash
 pip install -r requirements.txt
-```
 
-- Run the script:
-
-```
-python main.py
-```
+```bash
+main.py

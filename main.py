@@ -1,49 +1,56 @@
 from util import Util
 from youtube_downloader import YoutubeDownloader
 
-def menu():
+def print_menu():
+    print("========== PyTube Downloader power by unleed ==========")
+    print("Escolha uma opção:")
+    print("1. Download de Vídeo (1080p)")
+    print("2. Download de Áudio")
+    print("3. Download de Playlist")
+    print("4. Sair")
+
+def main():
+    downloader = YoutubeDownloader()
+
     while True:
-        print("Escolha uma opção:")
-        print("1. Download de Vídeo")
-        print("2. Download de Áudio")
-        print("3. Download de Playlist")
-        print("4. Sair")
+        Util.clear_terminal()
+        print_menu()
 
         choice = input("Opção: ")
 
         if choice == "1":
             url = input("Insira a URL do vídeo: ")
-            downloader.downloadVideo(url)
+            downloader.download_video(url)
 
         elif choice == "2":
             url = input("Insira a URL do vídeo: ")
-            downloader.downloadAudio(url)
+            downloader.download_audio(url)
 
         elif choice == "3":
-            while(True):
-                Util.clearTerminal()
-                print("Escolha uma opção:")
+            while True:
+                Util.clear_terminal()
+                print_menu()
+
+                print("Escolha uma opção para a Playlist:")
                 print("1. Download mp4 (video)")
                 print("2. Download mp3 (audio only)")
-                print("3. Back")
-                choice = input("Opção: ")
-                
-                if choice == "1" or choice == "2":
-                    url = input("Insira a URL da playlist:")
-                    downloader.downloadPlaylist(url, audioOnly=choice == "2")
-                elif choice == "3":
-                    Util.clearTerminal()
+                print("3. Voltar")
+
+                playlist_choice = input("Opção: ")
+
+                if playlist_choice == "1" or playlist_choice == "2":
+                    playlist_url = input("Insira a URL da playlist:")
+                    downloader.download_playlist(playlist_url, audio_only=playlist_choice == "2")
+                elif playlist_choice == "3":
                     break
                 else:
                     print("Opção inválida.")
-                
+
         elif choice == "4":
             break
 
         else:
-            Util.clearTerminal()
-            print("Opção inválida.")
+            print("Opção inválida. Pressione Enter para continuar.")
 
 if __name__ == "__main__":
-    downloader = YoutubeDownloader()
-    menu()
+    main()
