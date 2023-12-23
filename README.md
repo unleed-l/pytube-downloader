@@ -17,5 +17,7 @@ A simple python script to download videos and playlists from Youtube using pytub
 ```bash
 pip install -r requirements.txt
 
+```
 ```bash
 main.py
+```
